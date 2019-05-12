@@ -1,0 +1,53 @@
+body {
+  background: pink;
+  font-family: monospace;
+  letter-spacing: 1rem;
+}
+
+.main {
+  padding: 1rem;
+}
+
+.box {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.box:nth-child(even) {
+  background: orange;
+}
+.box:nth-child(odd) {
+  background: yellow;
+}
+
+span {
+  font-size: 2rem;
+}
+
+button {
+  border: 0;
+  font-family: inherit;
+  padding: 1rem;
+  color: white;
+  font-size: 1rem;
+  margin-left: 1rem;
+  box-shadow: 0.1rem 0.1rem 0.1rem silver;
+  cursor: pointer;
+}
+
+#btn_1,
+#btn_-1 {
+  background: salmon;
+}
+#btn_2,
+#btn_-2 {
+  background: turquoise;
+}
+#btn_3,
+#btn_-3 {
+  background: hotpink;
+}

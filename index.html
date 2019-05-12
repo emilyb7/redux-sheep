@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/main.css">
+  <title>Redux fun</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module">
+import createStore from "./redux.js";
+
+const initialState = 0; // simplest application state is just a single integer
+
+function reducer(state, action) {
+  return state + action;
+}
+
+const enhancer = storeCreator => (reducer, initialState) => {
+  const basicStore = storeCreator(reducer, initialState);
+  const basicDispatch = basicStore.dispatch;
+  const enhancedDispatch = action => {
+    const state = store.getState();
+    console.table({
+      previous_state: state,
+      next_state: reducer(state, action),
+      action
+    });
+    basicDispatch(action);
+  };
+  const enhancedStore = { ...basicStore, dispatch: enhancedDispatch };
+  return enhancedStore;
+};
+
+const store = createStore(reducer, initialState, enhancer);
+
+
+function button(rootElement, dispatch, n) {
+  const btn = document.createElement('button')
+  btn.onclick = function() {
+    return dispatch(n)
+  }
+  btn.id = `btn_${n}`
+  btn.textContent = `${n > 0 ? '+' : ''}${n}`
+  rootElement.appendChild(btn)
+}
+
+function row(count) {
+  const e = document.createElement('div')
+  e.classname = "row"
+  "e".repeat(count).split("").forEach(_ => {
+    const s = document.createElement("span")
+    s.textContent = "🐑";
+    e.appendChild(s);
+  })
+  return e
+}
+
+function boxOfSheep(count) {
+  if (count < 1) return
+  const box = document.createElement('div')
+  box.className = "box"
+  const fullRows = Math.floor(count / 5)
+  const extra = count % 5
+  Array(fullRows).fill('').forEach(_ => {
+    const r = row(5)
+    box.appendChild(r)
+  })
+  if (extra > 0) {
+    const r = row(extra)
+    box.appendChild(r)
+  }
+
+  return box
+}
+
+function empty(element) {
+  while (element.children.length) {
+    element.removeChild(element.firstChild);
+  }
+}
+
+function view() {
+  const root = document.getElementById('root')
+  empty(root)
+  const count = store.getState()
+  const dispatch = store.dispatch
+  button(root, dispatch, 1)
+  button(root, dispatch, 2)
+  button(root, dispatch, 3);
+  button(root, dispatch, -3)
+  button(root, dispatch, -2)
+  button(root, dispatch, -1);
+
+  const main = document.createElement("div")
+  main.classname = main
+
+  const boxes = Array(Math.floor(count / 25)).fill(25).concat([count % 25]).map(boxOfSheep)
+  boxes.forEach(b => { if (b) main.appendChild(b) })
+  root.appendChild(main)
+}
+
+store.subscribe(view)
+
+view()
+
+
+
+
+
+</script>
+</body>
+</html>
