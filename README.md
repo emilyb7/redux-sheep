@@ -41,7 +41,8 @@ Three principles of redux
 1. Single source of truth
 2. State is read only
 3. Changes are made with pure functions
-4. Lots of addons and things
+
+- Also, lots of addons and cool things!
 
 
 ## Why not redux?
